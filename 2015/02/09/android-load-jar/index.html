@@ -5,27 +5,18 @@
   
   <title>Android动态加载外部jar文件 | icyfox的个人主页</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Java具有将文件、网络中的类以字节码形式加载到运行程序中的功能，基于Java的Android也可以如此实现。实现这种方法后，程序可以进行模块化设计，各种方法支持热插拔，APP可以在想要更新的情况下进行方法的后台静默更新。以上，这种方法可以带来很大的便利，本文就来讲如何实现这个功能。　　本文开发环境使用Eclipse。
-　　
-###1. jar和dex文件的制作
-在Eclipse里新建一个Java">
+  <meta name="description" content="Java具有将文件、网络中的类以字节码形式加载到运行程序中的功能，基于Java的Android也可以如此实现。实现这种方法后，程序可以进行模块化设计，各种方法支持热插拔，APP可以在想要更新的情况下进行方法的后台静默更新。以上，这种方法可以带来很大的便利，本文就来讲如何实现这个功能。　　本文开发环境使用Eclipse。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Android动态加载外部jar文件">
 <meta property="og:url" content="http://icyfox.com/2015/02/09/android-load-jar/index.html">
 <meta property="og:site_name" content="icyfox的个人主页">
-<meta property="og:description" content="Java具有将文件、网络中的类以字节码形式加载到运行程序中的功能，基于Java的Android也可以如此实现。实现这种方法后，程序可以进行模块化设计，各种方法支持热插拔，APP可以在想要更新的情况下进行方法的后台静默更新。以上，这种方法可以带来很大的便利，本文就来讲如何实现这个功能。　　本文开发环境使用Eclipse。
-　　
-###1. jar和dex文件的制作
-在Eclipse里新建一个Java">
+<meta property="og:description" content="Java具有将文件、网络中的类以字节码形式加载到运行程序中的功能，基于Java的Android也可以如此实现。实现这种方法后，程序可以进行模块化设计，各种方法支持热插拔，APP可以在想要更新的情况下进行方法的后台静默更新。以上，这种方法可以带来很大的便利，本文就来讲如何实现这个功能。　　本文开发环境使用Eclipse。">
 <meta property="og:image" content="http://icyfox.com/img/android-load-jar-1.png">
 <meta property="og:image" content="http://icyfox.com/img/android-load-jar-2.png">
-<meta property="og:updated_time" content="2015-02-10T14:09:56.000Z">
+<meta property="og:updated_time" content="2015-11-04T15:42:02.563Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android动态加载外部jar文件">
-<meta name="twitter:description" content="Java具有将文件、网络中的类以字节码形式加载到运行程序中的功能，基于Java的Android也可以如此实现。实现这种方法后，程序可以进行模块化设计，各种方法支持热插拔，APP可以在想要更新的情况下进行方法的后台静默更新。以上，这种方法可以带来很大的便利，本文就来讲如何实现这个功能。　　本文开发环境使用Eclipse。
-　　
-###1. jar和dex文件的制作
-在Eclipse里新建一个Java">
+<meta name="twitter:description" content="Java具有将文件、网络中的类以字节码形式加载到运行程序中的功能，基于Java的Android也可以如此实现。实现这种方法后，程序可以进行模块化设计，各种方法支持热插拔，APP可以在想要更新的情况下进行方法的后台静默更新。以上，这种方法可以带来很大的便利，本文就来讲如何实现这个功能。　　本文开发环境使用Eclipse。">
   
     <link rel="alternative" href="/atom.xml" title="icyfox的个人主页" type="application/atom+xml">
   
@@ -243,8 +234,9 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>Java具有将文件、网络中的类以字节码形式加载到运行程序中的功能，基于Java的Android也可以如此实现。实现这种方法后，程序可以进行模块化设计，各种方法支持热插拔，APP可以在想要更新的情况下进行方法的后台静默更新。<br>以上，这种方法可以带来很大的便利，本文就来讲如何实现这个功能。<br>　　<br>本文开发环境使用Eclipse。
-　　</p>
+        <p>Java具有将文件、网络中的类以字节码形式加载到运行程序中的功能，基于Java的Android也可以如此实现。实现这种方法后，程序可以进行模块化设计，各种方法支持热插拔，APP可以在想要更新的情况下进行方法的后台静默更新。<br>以上，这种方法可以带来很大的便利，本文就来讲如何实现这个功能。<br>　　<br>本文开发环境使用Eclipse。</p>
+<a id="more"></a>
+<p>　　</p>
 <p>###1. jar和dex文件的制作</p>
 <p>在Eclipse里新建一个Java Project，新建一个类<code>Maths</code>，实现一个自定义的<code>add(int,int)</code>功能。</p>
 <pre><code><span class="keyword">public</span> <span class="keyword">class</span> Maths {
@@ -345,7 +337,7 @@
   <p><span>本文标题:</span><a href="/2015/02/09/android-load-jar/">Android动态加载外部jar文件</a></p>
   <p><span>文章作者:</span><a href="/" title="访问 icyfox 的个人博客">icyfox</a></p>
   <p><span>发布时间:</span>2015年2月9日 - 15时02分</p>
-  <p><span>最后更新:</span>2015年2月10日 - 22时02分</p>
+  <p><span>最后更新:</span>2015年11月4日 - 23时11分</p>
   <p>
     <span>原始链接:</span><a href="/2015/02/09/android-load-jar/" title="Android动态加载外部jar文件">http://icyfox.com/2015/02/09/android-load-jar/</a>
     <span class="btn" data-clipboard-text="原文: http://icyfox.com/2015/02/09/android-load-jar/　　作者: icyfox" title="点击复制文章链接">
