@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Android动态加载外部jar文件 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Java具有将文件、网络中的类以字节码形式加载到运行程序中的功能，基于Java的Android也可以如此实现。实现这种方法后，程序可以进行模块化设计，各种方法支持热插拔，APP可以在想要更新的情况下进行方法的后台静默更新。以上，这种方法可以带来很大的便利，本文就来讲如何实现这个功能。　　本文开发环境使用Eclipse。
+　　
+###1. jar和dex文件的制作
+在Eclipse里新建一个Java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android动态加载外部jar文件">
+<meta property="og:url" content="http://icyfox.com/2015/02/09/android-load-jar/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Java具有将文件、网络中的类以字节码形式加载到运行程序中的功能，基于Java的Android也可以如此实现。实现这种方法后，程序可以进行模块化设计，各种方法支持热插拔，APP可以在想要更新的情况下进行方法的后台静默更新。以上，这种方法可以带来很大的便利，本文就来讲如何实现这个功能。　　本文开发环境使用Eclipse。
+　　
+###1. jar和dex文件的制作
+在Eclipse里新建一个Java">
+<meta property="og:image" content="http://icyfox.com/img/android-load-jar-1.png">
+<meta property="og:image" content="http://icyfox.com/img/android-load-jar-2.png">
+<meta property="og:updated_time" content="2015-02-10T14:09:56.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android动态加载外部jar文件">
+<meta name="twitter:description" content="Java具有将文件、网络中的类以字节码形式加载到运行程序中的功能，基于Java的Android也可以如此实现。实现这种方法后，程序可以进行模块化设计，各种方法支持热插拔，APP可以在想要更新的情况下进行方法的后台静默更新。以上，这种方法可以带来很大的便利，本文就来讲如何实现这个功能。　　本文开发环境使用Eclipse。
+　　
+###1. jar和dex文件的制作
+在Eclipse里新建一个Java">
+  
+    <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="/img/avatar.jpg" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">icyfox</a></h1>
+		</hgroup>
+
+		
+		
+		<form><input type="text" class="search" placeholder=" Search..."></form>
+				
+
+
+		
+			<div id="switch-btn" class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						<li>友情链接</li>
+						
+						
+						<li>关于我</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div id="switch-area" class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives/">所有文章</a></li>
+				        
+							<li><a href="/tags/">标签云</a></li>
+				        
+							<li><a href="/about/">关于我</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<ul class="social">
+							
+								<li id="Email"><a class="Email" target="_blank" href="/icyfox330@gmail.com" title="Email"></a></li>
+					        
+								<li id="GitHub"><a class="GitHub" target="_blank" href="/icyfox-bupt" title="GitHub"></a></li>
+					        
+								<li id="RSS"><a class="RSS" target="_blank" href="/atom.xml" title="RSS"></a></li>
+					        
+						</ul>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/Android/" style="font-size: 15px;">Android</a> <a href="/tags/JAVA/" style="font-size: 10px;">JAVA</a> <a href="/tags/SSH/" style="font-size: 10px;">SSH</a> <a href="/tags/iOS/" style="font-size: 10px;">iOS</a> <a href="/tags/iPhone6/" style="font-size: 10px;">iPhone6</a> <a href="/tags/博客/" style="font-size: 10px;">博客</a> <a href="/tags/工具/" style="font-size: 10px;">工具</a> <a href="/tags/教程/" style="font-size: 10px;">教程</a> <a href="/tags/服务器/" style="font-size: 10px;">服务器</a> <a href="/tags/界面/" style="font-size: 10px;">界面</a> <a href="/tags/银行/" style="font-size: 10px;">银行</a> <a href="/tags/面试/" style="font-size: 20px;">面试</a>
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="https://hexo.io">Hexo</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="https://pages.github.com/">GitHub</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://moxfive.xyz/">MOxFIVE</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+				
+				<section class="switch-part switch-part4">
+				
+					<div id="js-aboutme">Keep Going On.</div>
+				</section>
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">icyfox</a></h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<a href="/" class="profilepic">
+				<img lazy-src="/img/avatar.jpg" class="js-avatar">
+			</a>
+			<hgroup>
+			  <h1 class="header-author"><a href="/" title="回到主页">icyfox</a></h1>
+			</hgroup>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives/">所有文章</a></li>
+		        
+					<li><a href="/tags/">标签云</a></li>
+		        
+					<li><a href="/about/">关于我</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+						<ul class="social">
+							
+								<li id="Email"><a class="Email" target="_blank" href="/icyfox330@gmail.com" title="Email"></a></li>
+					        
+								<li id="GitHub"><a class="GitHub" target="_blank" href="/icyfox-bupt" title="GitHub"></a></li>
+					        
+								<li id="RSS"><a class="RSS" target="_blank" href="/atom.xml" title="RSS"></a></li>
+					        
+						</ul>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-android-load-jar" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/02/09/android-load-jar/" class="article-date">
+  	<time datetime="2015-02-09T07:17:36.000Z" itemprop="datePublished">2015-02-09</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Android动态加载外部jar文件
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li></ul>
+	</div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Java具有将文件、网络中的类以字节码形式加载到运行程序中的功能，基于Java的Android也可以如此实现。实现这种方法后，程序可以进行模块化设计，各种方法支持热插拔，APP可以在想要更新的情况下进行方法的后台静默更新。<br>以上，这种方法可以带来很大的便利，本文就来讲如何实现这个功能。<br>　　<br>本文开发环境使用Eclipse。
+　　</p>
+<p>###1. jar和dex文件的制作</p>
+<p>在Eclipse里新建一个Java Project，新建一个类<code>Maths</code>，实现一个自定义的<code>add(int,int)</code>功能。</p>
+<pre><code><span class="keyword">public</span> <span class="keyword">class</span> Maths {
+    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span> i1, <span class="keyword">int</span> i2)</span></span>{
+        <span class="keyword">return</span> i1 + i2 - <span class="number">1</span>;
+    }
+}
+</code></pre><p>右键项目 — Export — JAR File，将这个类导出为maths.jar。</p>
+<p>由于Android虚拟机使用的是dex的文件格式，所以在此需要使用dx.bat把导出的jar换为dex格式。本文中，Android SDK目录为F:\SDK，使用build-tools版本为21.1.1，在CMD中更改目录至”F:\SDK\build-tools\21.1.1”，输入以下命令：</p>
+<pre><code>dx --dex --output=output<span class="class">.jar</span> <span class="tag">input</span><span class="class">.jar</span> 
+</code></pre><p>注意将将上面的<code>input.jar</code>和<code>output.jar</code>换成想要的文件名，并把maths.jar文件复制到dx.bat所在目录。</p>
+<p>###2. 创建一个Android项目</p>
+<p>复制maths.jar到Android手机卡根目录，并使用<code>[DexClassLoader][1]</code>加载类，使用反射获得类中的方法，并打印出来，代码如下：</p>
+<pre><code><span class="keyword">public</span> <span class="keyword">class</span> MainActivity <span class="keyword">extends</span> Activity {
+
+@Override
+<span class="keyword">protected</span> <span class="keyword">void</span> onCreate(Bundle savedInstanceState) {
+    <span class="keyword">super</span>.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_main);
+
+    loader(<span class="keyword">this</span>);
+}
+
+<span class="keyword">void</span> loader(Context context){
+    <span class="keyword">try</span>{
+        <span class="comment">//外部jar文件的路径</span>
+        <span class="keyword">File</span> jar = <span class="keyword">new</span> <span class="keyword">File</span>(Environment.getExternalStorageDirectory()
+                + <span class="keyword">File</span>.separator + <span class="string">"Dexmaths.jar"</span>);
+        <span class="comment">//临时放置编译dex文件的位置</span>
+        <span class="keyword">File</span> <span class="keyword">file</span> = context.getDir(<span class="string">"tmp"</span>, <span class="number">0</span>);
+
+        Log.i(<span class="string">"jar"</span>, jar.getAbsolutePath());
+        Log.i(<span class="string">"file"</span>, <span class="keyword">file</span>.getAbsolutePath());
+
+        <span class="comment">//加载外部类</span>
+        DexClassLoader dcl = <span class="keyword">new</span> DexClassLoader(
+                jar.getAbsolutePath(), <span class="keyword">file</span>.getAbsolutePath(), <span class="keyword">null</span>, 
+                context.getClassLoader());
+        <span class="comment">//将Maths类的字节码加载到maths中</span>
+        <span class="keyword">Class</span>&lt;?&gt; maths = dcl.loadClass(<span class="string">"Maths"</span>);
+        <span class="comment">//查看获得的类名</span>
+        Object math = maths.newInstance();
+        Log.i(<span class="string">"class"</span>, math.getClass().getName());
+        <span class="comment">//使用反射执行add()方法</span>
+        Method method = maths.getMethod(<span class="string">"add"</span>, <span class="keyword">int</span>.<span class="keyword">class</span>, <span class="keyword">int</span>.<span class="keyword">class</span>);
+        <span class="keyword">int</span> k = (<span class="keyword">int</span>) method.invoke(math, <span class="number">1</span>, <span class="number">2</span>);
+        Log.i(<span class="string">"class"</span>, <span class="string">"result = "</span> + k);
+    }
+    <span class="keyword">catch</span>(Exception e){
+        e.printStackTrace();
+    }
+}
+</code></pre><p>}</p>
+<p>其中<code>DexClassLoader</code>是实现功能的核心，它加载了外部jar并编译成dex文件，并可以加载类的字节码到<code>Class</code>对象中，之后就可以通过Java基本的反射方法进行方法的执行。</p>
+<p><code>DexClassLoader</code>构造函数说明:</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>dexPath</td>
+<td>包含类和资源文件的jar/apk文件列表，使用<code>:</code>分开</td>
+</tr>
+<tr>
+<td>optimizedDirectory</td>
+<td>放置优化后的dex文件的目录，必须不为null</td>
+</tr>
+<tr>
+<td>libraryPath</td>
+<td>包含本地library的目录列表，使用<code>:</code>分开，可以为null</td>
+</tr>
+<tr>
+<td>parent</td>
+<td>父类类加载器</td>
+</tr>
+</tbody>
+</table>
+<p>###3. 执行结果<br>程序执行后LogCat显示如下：<br><img src="/img/android-load-jar-1.png" alt="此处输入图片的描述"></p>
+<p>在jar里定义的函数被成功执行，这就说明APP成功地加载了jar包。</p>
+<p>查看cache文件夹，发现这里存放着生成的dex文件：<br><img src="/img/android-load-jar-2.png" alt="此处输入图片的描述"></p>
+<p><strong>参考文献</strong></p>
+<ol>
+<li><a href="http://blog.csdn.net/cheligeer1988/article/details/13774271" target="_blank" rel="external">Android用DexClassLoader实现动态调用jar包</a></li>
+</ol>
+
+      
+      
+    </div>
+    
+  </div>
+  
+    
+<div class="copyright">
+  <p><span>本文标题:</span><a href="/2015/02/09/android-load-jar/">Android动态加载外部jar文件</a></p>
+  <p><span>文章作者:</span><a href="/" title="访问 icyfox 的个人博客">icyfox</a></p>
+  <p><span>发布时间:</span>2015年2月9日 - 15时02分</p>
+  <p><span>最后更新:</span>2015年2月10日 - 22时02分</p>
+  <p>
+    <span>原始链接:</span><a href="/2015/02/09/android-load-jar/" title="Android动态加载外部jar文件">http://icyfox.com/2015/02/09/android-load-jar/</a>
+    <span class="btn" data-clipboard-text="原文: http://icyfox.com/2015/02/09/android-load-jar/　　作者: icyfox" title="点击复制文章链接">
+        <i class="fa fa-clipboard"></i>
+    </span>
+  </p>
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)">"署名-非商用-相同方式共享 3.0"</a> 转载请保留原文链接及作者。</p>
+  <script src="/js/clipboard.min.js"></script>
+  <script> var clipboard = new Clipboard('.btn'); </script>
+</div>
+<style type="text/css">
+  .copyright p .btn {
+    margin-left: 1em;
+  }
+  .copyright:hover p .btn::after {
+    content: "复制"
+  }
+  .copyright p .btn:hover {
+      color: gray;
+      cursor: pointer;
+    };
+</style>
+
+
+
+<nav id="article-nav">
+  
+    <div id="article-nav-newer" class="article-nav-title">
+      <a href="/2015/02/10/interview-of-ls/">
+        LS网面试记录
+      </a>
+    </div>
+  
+  
+    <div id="article-nav-older" class="article-nav-title">
+      <a href="/2015/02/01/make-a-hexo-blog/">
+        使用Github + hexo 搭建自己的博客
+      </a>
+    </div>
+  
+</nav>
+
+  
+</article>
+
+<!-- 默认显示文章目录，在文章---前输入toc: false关闭目录 -->
+<!-- Show TOC and tocButton in default, Hide TOC via putting "toc: false" before "---" at [post].md -->
+<div id="toc" class="toc-article">
+<strong class="toc-title">文章目录</strong>
+
+</div>
+<style type="text/css">
+  .left-col .switch-btn {
+    display: none;
+  }
+  .left-col .switch-area {
+    display: none;
+  }
+</style>
+
+<input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+<script type="text/javascript">
+  var toc_button= document.getElementById("tocButton");
+  var toc_div= document.getElementById("toc");
+  /* Show or hide toc when click on tocButton.
+  通过点击设置的按钮显示或者隐藏文章目录.*/
+  toc_button.onclick=function(){
+  if(toc_div.style.display=="none"){
+  toc_div.style.display="block";
+  toc_button.value="隐藏目录";
+  document.getElementById("switch-btn").style.display="none";
+  document.getElementById("switch-area").style.display="none";
+  }
+  else{
+  toc_div.style.display="none";
+  toc_button.value="显示目录";
+  document.getElementById("switch-btn").style.display="block";
+  document.getElementById("switch-area").style.display="block";
+  }
+  }
+</script>
+
+
+<div class="share">
+	<div class="bdsharebuttonbox">
+	<a href="#" class="bds_more" data-cmd="more"></a>
+	<a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+	<a href="#" class="bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+	<a href="#" class="bds_copy" data-cmd="copy" title="复制网址"></a>
+	<a href="#" class="bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+	<a href="#" class="bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+	</div>
+	<script>
+	window._bd_share_config={
+		"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+	</script>
+</div>
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="2015/02/09/android-load-jar/" data-title="Android动态加载外部jar文件" data-url="http://icyfox.com/2015/02/09/android-load-jar/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"icyfox"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+
+
+    <style type="text/css">
+    #scroll {
+      display: none;
+    }
+    </style>
+    <div class="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#ds-thread" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+    </div>
+
+
+  
+  
+    
+    <div  class="post-nav-button">
+    <a href="/2015/02/10/interview-of-ls/" title="上一篇: LS网面试记录">
+    <i class="fa fa-angle-left"></i>
+    </a>
+    <a href="/2015/02/01/make-a-hexo-blog/" title="下一篇: 使用Github + hexo 搭建自己的博客">
+    <i class="fa fa-angle-right"></i>
+    </a>
+    </div>
+  
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        &copy; 2015 icyfox
+      </div>
+        <div class="footer-right">
+          <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的静态博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减双栏 Hexo 博客主题">Yelee</a> by MOxFIVE
+        </div>
+    </div>
+    <div class="visit">
+      <span id="busuanzi_container_site_pv" style='display:none'>
+        <span id="site-visit" >本站到访数: 
+        <span id="busuanzi_value_site_uv"></span>
+        </span>
+      </span>
+      <span id="busuanzi_container_page_pv" style='display:none'>
+        <span id="page-visit">, 本页阅读量: 
+        <span id="busuanzi_value_page_pv"></span>
+        </span>
+      </span>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="/js/main.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+  var backgroundList = ["url(/background/bg-1.jpg)", "url(/background/bg-2.jpg)","url(/background/bg-3.jpg)","url(/background/bg-4.jpg)","url(/background/bg-5.jpg)"];
+  var background = Math.floor(Math.random() * backgroundList.length);
+  $("body").css({"background": backgroundList[background], "background-attachment": "fixed", "background-size": "cover"});
+</script>
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<div class="scroll" id="scroll">
+<a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+<a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>
