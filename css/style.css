@@ -1867,7 +1867,7 @@ li:hover {
   border-width: 1px 0;
   overflow: auto;
   color: #4d4d4c;
-  line-height: 22.400000000000002px;
+  line-height: 64.39999999999999px;
 }
 .article-entry .highlight .gutter pre,
 .article-entry .gist .gist-file .gist-data .line-numbers {
@@ -1934,7 +1934,7 @@ li:hover {
   padding-right: 20px;
 }
 .article-entry .highlight .line {
-  height: 22.400000000000002px;
+  height: 64.39999999999999px;
 }
 .article-entry .gist {
   margin: 0 -20px;
